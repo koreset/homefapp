@@ -1,0 +1,43 @@
+{{define "sustainability-academy"}}
+{{template "base_header"}}
+<section class="sustainability-banner jumbotron d-flex align-items-center">
+    <div class="container">
+        <div class="fossil-banner-content col-lg-6">
+            <h1>Sustainability Academy</h1>
+            <p class="text-justify">The Sustainability Academy provides the fundamental vehicle for the attainment of
+                the change HOMEF seeks to build by creating spaces for knowledge creation, interrogation and sharing.
+            </p>
+        </div>
+    </div>
+</section>
+<section class="latest-news container-fluid">
+    <div class="container">
+        <h5>Latest News</h5>
+        <div class="row post-top">
+            <div class="card-deck">
+            {{ range .posts}}
+                    {{template "card-item" .}}
+                {{end}}
+            </div>
+        </div>
+    </div>
+</section>
+<section class="featured container-fluid">
+    <div class="container">
+        <div class="row d-flex align-items-center">
+            <div class="col-lg-6"><img class="img-fluid" src="/public/wp-content/uploads/2018/08/Living-with-Fear.jpg"
+                                       alt=""></div>
+            <div class="col-lg-6">
+                <h2>Living in Fear</h2>
+                <h5>Juan Lopez Villa</h5>
+                <p>This book explores the general relation between wars, conflicts and natural resources, focusing in
+                    particular on two African countries: Democratic Republic of Congo (DRC) and South Sudan.</p>
+                <button type="button" class="btn btn-outline-secondary">Download</button>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{{template "base_footer"}}
+{{end}}

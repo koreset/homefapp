@@ -1,0 +1,13 @@
+{{define "card-item"}}
+<div class="card">
+{{ if .Images}}
+    <img class="card-img-top img-fluid post-image" src="/public{{(index .Images 0).File.URL}}"
+         alt="Oilwatch Africa: The Lamu Declaration">
+
+{{ end }}
+    <div class="card-body">
+        <h5><a href="/posts/{{.ID }}">{{ .Title}}</a></h5>
+        <p>{{.Body | stripSummaryTags | truncateBody 300 }}</p>
+    </div>
+</div>
+{{end}}
