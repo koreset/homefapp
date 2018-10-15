@@ -163,6 +163,13 @@ section.sustainability-banner {
     color: #ffffff;
 }
 
+section.programme-areas{
+    margin-bottom: 30px;
+}
+div.card-body a:hover{
+    color: rgba(5, 4, 5, 0.29);
+}
+
 footer {
     background-color: #222222;
     color: #ffffff;

@@ -26,14 +26,16 @@ $(document).ready(function () {
         });
     });
 
-    $.ajax({
-        url: '/api/get-tweets',
-        type: 'get',
-        success: function (data) {
-            console.log(data)
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log(xhr.responseText);
-        }
+    $.getJSON("/api/get-flickr", function (result, status, xhr) {
+        console.log(result);
+        $.each(result.photos.photo, function (index, value) {
+            console.log("Value: " + value.url_sq);
+            $("div.flicker-images").append(
+            '<img width="75" height="75" src='+ value.url_t +' alt="">'
+            );
+        });
+
+
     });
+
 });
