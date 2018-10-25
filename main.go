@@ -75,6 +75,8 @@ func SetupRouter() *gin.Engine {
 	router.GET("/resources", controllers.ResourceIndex)
 	router.GET("/resources/annual-reports", controllers.ResourceAnnualReports)
 	router.GET("/resources/publications", controllers.ResourcePublications)
+	router.GET("/resources/books", controllers.ResourceBooks)
+	router.GET("/resources/eco-instigator", controllers.ResourceEcoInstigator)
 	router.GET("/sustainability-academy", controllers.SustainabilityAcademy)
 	router.GET("posts/:id", controllers.GetPost)
 	router.GET("publications", controllers.GetPublications)

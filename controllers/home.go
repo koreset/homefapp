@@ -19,6 +19,6 @@ func Home(c *gin.Context) {
 	payload["publications"] = publications
 	payload["active"] = "home_page"
 
-	c.HTML(http.StatusOK, "boot.html", payload)
+	c.HTML(http.StatusOK, "home", payload)
 
 }

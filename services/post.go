@@ -21,6 +21,18 @@ func GetPosts(start, limit int) []models.Post {
 	return posts
 }
 
+func GetRecentPosts(start, limit int) []models.Post {
+	var posts []models.Post
+	GetDB().Where("type in (?) and body != '' and summary != ''", []string{"article", "press_release", "news"}).Preload("Images").Order("created desc").Offset(start).Limit(limit).Find(&posts)
+	// Lets sanitize the html output and strip off MSOffice tags
+	for _, post := range posts {
+		post.Body, _ = sanitize.HTMLAllowing(post.Body, defaultTags, defaultAttributes)
+		//fmt.Println(post.Images[0].File.OSS.URL("large"))
+	}
+	return posts
+}
+
+
 func GetVideos() []models.Post {
 	var videos []models.Post
 	GetDB().Where("type = 'video'").Preload("Images").Preload("Videos").Order("created desc").Find(&videos)

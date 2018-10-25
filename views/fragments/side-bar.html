@@ -1,0 +1,17 @@
+{{define "side_bar"}}
+<div class="recent-posts">
+    <h3>Recent Posts</h3>
+    <ul>
+    {{range .recentPosts}}
+        <li class="d-flex align-items-center"><img src="/public{{(index .Images 0).File.URL}}" alt="">
+            <p><a href="/posts/{{.ID}}">{{.Title}}</a></p></li>
+    {{end}}
+    </ul>
+</div>
+<div class="recent-tweets">
+    <h3>@Twitter</h3>
+    <div class="tweets">
+
+    </div>
+</div>
+{{end}}

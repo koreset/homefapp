@@ -6,10 +6,10 @@ import (
 	"github.com/dghubble/oauth1"
 	"github.com/gin-gonic/gin"
 	"github.com/koreset/go-twitter/twitter"
+	"github.com/koreset/homefapp/models"
 	"github.com/koreset/homefapp/utils"
 	"io/ioutil"
 	"net/http"
-	"github.com/koreset/homefapp/models"
 )
 
 func GetTweets(c *gin.Context) {
@@ -19,7 +19,13 @@ func GetTweets(c *gin.Context) {
 
 	client := twitter.NewClient(httpClient)
 
-	tweets, response, err := client.Timelines.UserTimeline(&twitter.UserTimelineParams{ScreenName: "Health_Earth", Count: 5,})
+	tweets, response, err := client.Timelines.UserTimeline(&twitter.UserTimelineParams{ScreenName: "Health_Earth", Count: 5,TweetMode: "extended"})
+
+	for _, tweet := range tweets {
+			fmt.Println()
+			fmt.Println(tweet.IDStr)
+			fmt.Println(tweet.FullText)
+	}
 
 	shallowTweets := utils.GetShallowTweets(tweets)
 
@@ -28,9 +34,8 @@ func GetTweets(c *gin.Context) {
 	}
 
 	if response.StatusCode == http.StatusOK {
-		fmt.Println(shallowTweets)
 		c.JSON(http.StatusOK, shallowTweets)
-	}else{
+	} else {
 		c.JSON(http.StatusOK, "test")
 	}
 }

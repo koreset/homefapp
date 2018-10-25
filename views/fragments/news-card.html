@@ -1,13 +1,15 @@
 {{define "news-card"}}
-
 <div class="card news-card flex-grow-1">
-    <div class="news-card-image">
-        <img src="/public{{(index .Images 0).File.URL}}" alt="" class="card-top img-fluid">
-    </div>
+    <div class="card-image">
+    {{ if .Images}}
+        <a href="/posts/{{.ID }}"><img class="card-img-top img-fluid" src="/public{{(index .Images 0).File.URL}}"
+                                       alt=""></a>
+    {{ end }}
 
+    </div>
     <div class="card-body">
-        <a href="/posts/{{.ID}}"><h5>{{.Title}}</h5></a>
+        <h5><a href="/posts/{{.ID }}">{{ .Title}}</a></h5>
+    {{/*<p>{{.Body | stripSummaryTags | truncateBody 300 }}</p>*/}}
     </div>
 </div>
-
 {{end}}

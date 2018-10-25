@@ -18,7 +18,7 @@ func GetPost(c *gin.Context) {
 		return
 	}
 	post := services.GetPost(postID)
-	recentPosts := services.GetPosts(0,5)
+	recentPosts := services.GetRecentPosts(0,5)
 	payload["post"] = post
 	payload["recentPosts"] = recentPosts
 	payload["active"] = "none"

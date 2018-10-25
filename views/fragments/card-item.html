@@ -1,5 +1,5 @@
 {{define "card-item"}}
-<div class="card">
+<div class="card card-background">
 {{ if .Images}}
     <a href="/posts/{{.ID }}"><img class="card-img-top img-fluid post-image" src="/public{{(index .Images 0).File.URL}}"
          alt=""></a>

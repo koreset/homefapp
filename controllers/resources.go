@@ -48,3 +48,32 @@ func ResourceAnnualReports(c *gin.Context) {
 	c.HTML(http.StatusOK, "resource-annual-reports", payload)
 
 }
+
+func ResourceBooks(c *gin.Context) {
+	payload := make(map[string]interface{})
+	posts := services.GetPosts(0, 9)
+	videos := services.GetVideos()
+	publications := services.GetPublications()
+	payload["posts"] = posts
+	payload["videos"] = videos
+	payload["publications"] = publications
+	payload["active"] = "hunger_politics"
+
+	c.HTML(http.StatusOK, "resource-books", payload)
+
+}
+
+
+func ResourceEcoInstigator(c *gin.Context) {
+	payload := make(map[string]interface{})
+	posts := services.GetPosts(0, 9)
+	videos := services.GetVideos()
+	publications := services.GetPublications()
+	payload["posts"] = posts
+	payload["videos"] = videos
+	payload["publications"] = publications
+	payload["active"] = "hunger_politics"
+
+	c.HTML(http.StatusOK, "resource-eco-instigator", payload)
+
+}

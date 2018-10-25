@@ -37,6 +37,6 @@ func GetBoot(c *gin.Context){
 	payload["postsBottom"] = postsBottom
 
 
-	c.HTML(http.StatusOK, "boot.html", payload)
+	c.HTML(http.StatusOK, "home.html", payload)
 }
 

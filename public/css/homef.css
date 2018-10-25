@@ -163,10 +163,11 @@ section.sustainability-banner {
     color: #ffffff;
 }
 
-section.programme-areas{
+section.programme-areas {
     margin-bottom: 30px;
 }
-div.card-body a:hover{
+
+div.card-body a:hover {
     color: rgba(5, 4, 5, 0.29);
 }
 
@@ -219,15 +220,24 @@ footer p {
     height: 300px;
 }
 
-.news-card-image .card-top{
+.news-card-image .card-top {
     object-fit: contain;
 }
 
-.card-body a{
+.card-body a {
     text-decoration: none;
-    color: #000000;
+    color: #ffffff;
 }
-/* Media querie */
+
+.card-background {
+    background-color: #383A3C;
+}
+
+.media-body p {
+    font-size: 0.8rem;
+}
+
+/* Media queries */
 @media (max-width: 768px) {
     .card-deck {
         display: -ms-flexbox;
