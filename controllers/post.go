@@ -22,6 +22,7 @@ func GetPost(c *gin.Context) {
 	payload["post"] = post
 	payload["recentPosts"] = recentPosts
 	payload["active"] = "none"
+	payload["title"] = post.Title
 	c.HTML(http.StatusOK, "post-detail", payload)
 }
 

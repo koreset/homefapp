@@ -18,6 +18,7 @@ func Home(c *gin.Context) {
 	payload["videos"] = videos
 	payload["publications"] = publications
 	payload["active"] = "home_page"
+	payload["title"] = "Home"
 
 	c.HTML(http.StatusOK, "home", payload)
 

@@ -16,6 +16,7 @@ func FossilPolitics(c *gin.Context) {
 	payload["videos"] = videos
 	payload["publications"] = publications
 	payload["active"] = "fossil_politics"
+	payload["title"] = "Fossil Politics"
 
 	c.HTML(http.StatusOK, "fossil-politics", payload)
 
@@ -30,6 +31,7 @@ func HungerPolitics(c *gin.Context) {
 	payload["videos"] = videos
 	payload["publications"] = publications
 	payload["active"] = "hunger_politics"
+	payload["title"] = "Hunger Politics"
 
 	c.HTML(http.StatusOK, "hunger-politics", payload)
 
@@ -44,6 +46,7 @@ func SustainabilityAcademy(c *gin.Context) {
 	payload["videos"] = videos
 	payload["publications"] = publications
 	payload["active"] = "sustainability_politics"
+	payload["title"] = "Sustainability Academy"
 
 	c.HTML(http.StatusOK, "sustainability-academy", payload)
 

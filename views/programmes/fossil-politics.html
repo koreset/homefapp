@@ -1,5 +1,5 @@
 {{define "fossil-politics"}}
-{{template "base_header"}}
+{{template "base_header" .title}}
 <section class="fossil-banner jumbotron d-flex align-items-center">
     <div class="container">
         <div class="fossil-banner-content col-lg-6">
@@ -13,7 +13,7 @@
 </section>
 <section class="latest-news container-fluid">
     <div class="container">
-        <h5>Latest News</h5>
+        <h5>Fossil Politics - News</h5>
         <div class="row post-top">
             <div class="card-deck">
             {{ range .posts}}

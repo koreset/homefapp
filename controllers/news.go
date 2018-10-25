@@ -12,5 +12,7 @@ func GetNews(context *gin.Context) {
 	recentPosts := services.GetPosts(0, 5)
 	payload["recentPosts"] = recentPosts
 	payload["newsitems"] = newsItems
+	payload["title"] = "News"
+
 	context.HTML(http.StatusOK, "news_index", payload)
 }
