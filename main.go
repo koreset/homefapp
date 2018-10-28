@@ -90,6 +90,7 @@ func SetupRouter() *gin.Engine {
 	{
 		api.GET("/get-tweets",controllers.GetTweets)
 		api.GET("/get-flickr", controllers.GetFlickr)
+		api.GET("/testdata", controllers.GetTestData)
 	}
 
 	router.Static("/public", "./public")

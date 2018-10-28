@@ -237,6 +237,18 @@ footer p {
     font-size: 0.8rem;
 }
 
+.gallery-image{
+    width: 320px;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+.img-cover{
+    width: 320px;
+    height: 200px;
+    object-fit: cover;
+}
+
 /* Media queries */
 @media (max-width: 768px) {
     .card-deck {

@@ -22,22 +22,6 @@
         </div>
     </div>
 </section>
-<section class="featured container-fluid">
-    <div class="container">
-        <div class="row d-flex align-items-center">
-            <div class="col-lg-6"><img class="img-fluid" src="/public/wp-content/uploads/2018/08/Living-with-Fear.jpg"
-                                       alt=""></div>
-            <div class="col-lg-6">
-                <h2>Living in Fear</h2>
-                <h5>Juan Lopez Villa</h5>
-                <p>This book explores the general relation between wars, conflicts and natural resources, focusing in
-                    particular on two African countries: Democratic Republic of Congo (DRC) and South Sudan.</p>
-                <button type="button" class="btn btn-outline-secondary">Download</button>
-            </div>
-        </div>
-    </div>
-
-</section>
-
+{{template "flickr-gallery" .gallery.Photos.PhotoItems}}
 {{template "base_footer"}}
 {{end}}

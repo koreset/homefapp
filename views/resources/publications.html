@@ -4,7 +4,13 @@
 <section class="publications container">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9"><h1>Publications</h1>
+            <div class="col-lg-9">
+                <h1>Publications</h1>
+                <div class="container">
+                {{ range .publications}}
+                    <h4>{{.Title}}</h4>
+                {{end}}
+                </div>
             </div>
             <div class="col-lg-3">{{template "side_bar"}}</div>
         </div>

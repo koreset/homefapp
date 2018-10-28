@@ -40,10 +40,10 @@ func HungerPolitics(c *gin.Context) {
 func SustainabilityAcademy(c *gin.Context) {
 	payload := make(map[string]interface{})
 	posts := services.GetPostsForCategory(0, 3, 4)
-	videos := services.GetVideos()
 	publications := services.GetPublications()
+	gallery, _ := services.GetFlickrImages(9)
+	payload["gallery"] = gallery
 	payload["posts"] = posts
-	payload["videos"] = videos
 	payload["publications"] = publications
 	payload["active"] = "sustainability_politics"
 	payload["title"] = "Sustainability Academy"
@@ -51,5 +51,3 @@ func SustainabilityAcademy(c *gin.Context) {
 	c.HTML(http.StatusOK, "sustainability-academy", payload)
 
 }
-
-
