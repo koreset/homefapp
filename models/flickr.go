@@ -18,3 +18,34 @@ type PhotoItem struct {
 	UrlSmall string `json:"url_s"`
 	UrlLarge string `json:"url_l"`
 }
+
+type AlbumPayload struct {
+	Stat string `json:"stat"`
+	PhotoSets PhotoSets `json:"photosets"`
+}
+
+type PhotoSets struct {
+	PhotoAlbums []PhotoAlbum `json:"photoset"`
+}
+
+type PhotoAlbum struct {
+	Id string `json:"id"`
+	Primary string `json:"primary"`
+	Photos int `json:"photos"`
+	Title Title `json:"title"`
+	Description Description `json:"description"`
+	PrimaryPhotoExtra PrimaryPhotoExtra `json:"primary_photo_extras"`
+}
+
+type PrimaryPhotoExtra struct {
+	Url string `json:"url_n"`
+	UrlMedium string `json:"url_m"`
+}
+
+type Title struct {
+	Content string `json:"_content"`
+}
+
+type Description struct {
+	Content string `json:"_content"`
+}

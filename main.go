@@ -15,6 +15,8 @@ import (
 	"github.com/qor/media"
 	"github.com/qor/media/asset_manager"
 	"github.com/qor/media/media_library"
+	"github.com/satori/go.uuid"
+	"github.com/semihalev/gin-stats"
 	"html/template"
 	"net/http"
 )
@@ -47,6 +49,14 @@ func setupTemplatFuncs() template.FuncMap {
 	return funcMaps
 }
 
+func RequestIdMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		xuid, _ := uuid.NewV4()
+		c.Writer.Header().Set("X-Request-Id", xuid.String())
+		c.Next()
+	}
+}
+
 func SetupRouter() *gin.Engine {
 	mux := http.NewServeMux()
 
@@ -65,9 +75,18 @@ func SetupRouter() *gin.Engine {
 	post.Meta(&admin.Meta{Name: "Body", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 
 	router := gin.Default()
+	router.Use(func(c *gin.Context) {
+		fmt.Println("User Agent: ", c.Request.UserAgent())
+		c.Next()
+	})
+	router.Use(RequestIdMiddleware())
+
 	router.SetFuncMap(setupTemplatFuncs())
 	router.LoadHTMLGlob("views/**/*")
 
+	router.GET("/stats", func(context *gin.Context) {
+		context.JSON(http.StatusOK, stats.Report())
+	})
 	router.GET("/", controllers.Home)
 	router.GET("/aboutus", controllers.AboutUs)
 	router.GET("/fossil-politics", controllers.FossilPolitics)
@@ -77,6 +96,7 @@ func SetupRouter() *gin.Engine {
 	router.GET("/resources/publications", controllers.ResourcePublications)
 	router.GET("/resources/books", controllers.ResourceBooks)
 	router.GET("/resources/eco-instigator", controllers.ResourceEcoInstigator)
+	router.GET("/resources/gallery", controllers.ResourceGallery)
 	router.GET("/sustainability-academy", controllers.SustainabilityAcademy)
 	router.GET("posts/:id", controllers.GetPost)
 	router.GET("publications", controllers.GetPublications)
@@ -88,7 +108,7 @@ func SetupRouter() *gin.Engine {
 	//API Calls
 	api := router.Group("/api")
 	{
-		api.GET("/get-tweets",controllers.GetTweets)
+		api.GET("/get-tweets", controllers.GetTweets)
 		api.GET("/get-flickr", controllers.GetFlickr)
 		api.GET("/testdata", controllers.GetTestData)
 	}

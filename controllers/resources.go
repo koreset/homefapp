@@ -20,7 +20,6 @@ func ResourceIndex(c *gin.Context) {
 
 }
 
-
 func ResourcePublications(c *gin.Context) {
 	payload := make(map[string]interface{})
 	posts := services.GetPosts(0, 9)
@@ -63,7 +62,6 @@ func ResourceBooks(c *gin.Context) {
 
 }
 
-
 func ResourceEcoInstigator(c *gin.Context) {
 	payload := make(map[string]interface{})
 	posts := services.GetPosts(0, 9)
@@ -76,4 +74,10 @@ func ResourceEcoInstigator(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "resource-eco-instigator", payload)
 
+}
+
+func ResourceGallery(c *gin.Context) {
+	payload := make(map[string]interface{})
+	payload["albums"] = services.GetFlickrAlbums()
+	c.HTML(http.StatusOK, "resource-gallery", payload)
 }

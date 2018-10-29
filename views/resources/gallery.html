@@ -1,0 +1,29 @@
+{{define "resource-gallery"}}
+{{template "base_header" .title}}
+<section class="flickr-gallery container">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <h1>Photo Gallery</h1>
+                <div class="container">
+                    <div class="row">
+                    {{range .albums}}
+                        <div class="col-lg-4  col-md-4 col-sm-12 col-xs-12 album-item">
+                            <div class="hovereffect">
+                                <img class="img-fluid album-item-image" src="{{ .PrimaryPhotoExtra.UrlMedium}}" alt="">
+                                <div class="overlay">
+                                    <h2>{{ .Title.Content}}</h2>
+                                    <a class="info" href="/resources/gallery/{{ .Id}}">View Album</a>
+                                </div>
+                            </div>
+                        </div>
+                    {{end}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">{{template "side_bar"}}</div>
+        </div>
+    </div>
+</section>
+{{template "base_footer"}}
+{{ end}}

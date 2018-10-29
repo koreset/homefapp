@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/dghubble/oauth1"
 	"github.com/gin-gonic/gin"
 	"github.com/koreset/go-twitter/twitter"
@@ -19,12 +18,6 @@ func GetTweets(c *gin.Context) {
 
 	tweets, response, err := client.Timelines.UserTimeline(&twitter.UserTimelineParams{ScreenName: "Health_Earth", Count: 5,TweetMode: "extended"})
 
-	for _, tweet := range tweets {
-			fmt.Println()
-			fmt.Println(tweet.IDStr)
-			fmt.Println(tweet.FullText)
-	}
-
 	shallowTweets := utils.GetShallowTweets(tweets)
 
 	if err != nil {
@@ -41,13 +34,12 @@ func GetTweets(c *gin.Context) {
 func GetFlickr(c *gin.Context) {
 
 	payload, e := services.GetFlickrImages(9)
+	services.GetFlickrAlbums()
 	if e != nil{
 		c.JSON(http.StatusInternalServerError, nil)
 	}else{
 		c.JSON(http.StatusOK, payload)
 	}
-
-
 
 }
 
