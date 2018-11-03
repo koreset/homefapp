@@ -168,7 +168,7 @@ section.sustainability-banner {
     font-size: 0.9rem;
 }
 
-.fossil-banner-content {
+.fossil-banner-content, .aboutus-banner-content {
     color: #ffffff;
 }
 
@@ -444,6 +444,12 @@ body.hasHover a.test-purpose:hover {
 
 .hovereffect a.info:hover {
     box-shadow: 0 0 5px #fff;
+}
+
+div.homef-reason h3{
+    width: 100%;
+    text-align: center;
+    margin-top: 2rem;
 }
 
 /* End Tests CSS */

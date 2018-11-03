@@ -176,7 +176,7 @@ func main() {
 		SetupDB()
 		defer db.Close()
 
-		//loadTemplates()
+		loadTemplates()
 		r := SetupRouter()
 		fmt.Println(*host, *port)
 		r.Run(fmt.Sprintf("%s:%s", *host, *port))
