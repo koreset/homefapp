@@ -6,9 +6,21 @@
         <div class="row">
             <div class="col-lg-9">
                 <h1>Publications</h1>
-                <div class="container">
+                <div class="container publications-list">
                 {{ range .publications}}
-                    <h4>{{.Title}}</h4>
+                    <div class="publication-item row">
+                        <div class="col-lg-6">
+                            <img class="img-fluid img-cover" src="/public{{(index .Images 0).File.URL}}">
+                        </div>
+                        <div class="col-lg-6">
+                            <h4>{{.Title}}</h4>
+                            <p>{{.Body | unsafeHtml}}</p>
+                        {{ if .Documents}}
+                            <a class="publication-link btn btn-outline-secondary" target="_blank"
+                               href="/public{{(index .Documents 0).File.URL}}" role="button">Download</a>
+                        {{ end}}
+                        </div>
+                    </div>
                 {{end}}
                 </div>
             </div>

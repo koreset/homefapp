@@ -47,10 +47,10 @@ func GetPost(postid int) models.Post {
 	return post
 }
 
-func GetPublications() []models.Post {
+func GetPublications(start, limit int) []models.Post {
 	var publications []models.Post
 
-	GetDB().Where("type = 'publication'").Preload("Images").Preload("Links").Order("created desc").Find(&publications)
+	GetDB().Where("type = 'publication'").Preload("Images").Preload("Links").Preload("Documents").Order("created desc").Offset(start).Limit(limit).Find(&publications)
 
 	return publications
 }

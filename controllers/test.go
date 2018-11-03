@@ -7,13 +7,14 @@ import (
 )
 
 func GetTest(c *gin.Context){
-	payload := make(map[string] interface{} )
+	//payload := make(map[string] interface{} )
+	//
+	//posts := services.GetPosts(0, 4)
+	//payload["posts"] = posts
+	payload := make(map[string]interface{})
+	payload["albums"] = services.GetFlickrAlbums()
 
-	posts := services.GetPosts(0, 4)
-	payload["posts"] = posts
-
-
-	c.HTML(http.StatusOK, "original", payload)
+	c.HTML(http.StatusOK, "testing.html", payload)
 }
 
 

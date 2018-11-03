@@ -5,20 +5,21 @@
         <div class="row">
             <div class="col-lg-9">
                 <h1>Photo Gallery</h1>
-                <div class="container">
-                    <div class="row">
-                    {{range .albums}}
-                        <div class="col-lg-4  col-md-4 col-sm-12 col-xs-12 album-item">
-                            <div class="hovereffect">
-                                <img class="img-fluid album-item-image" src="{{ .PrimaryPhotoExtra.UrlMedium}}" alt="">
-                                <div class="overlay">
-                                    <h2>{{ .Title.Content}}</h2>
-                                    <a class="info" href="/resources/gallery/{{ .Id}}">View Album</a>
-                                </div>
-                            </div>
+                <div class="row">
+                {{range .albums}}
+                    <div class="album-grid">
+                        <img
+                                class="img-fluid album-grid-item" src="{{ .PrimaryPhotoExtra.UrlMedium}}" alt=""></a>
+                    {{/*<div class="overlay">*/}}
+                    {{/*<h2>{{ .Title.Content}}</h2>*/}}
+                    {{/*<a class="info align-middle" href="/resources/gallery/{{ .Id}}/{{ .Title.Content}}">View*/}}
+                    {{/*Album</a>*/}}
+                    {{/*</div>*/}}
+                        <div class="album-grid-item-overlay">
+                            <a class="album-grid-item-title" href="/resources/gallery/{{ .Id}}/{{ .Title.Content}}"><h2>{{ .Title.Content}}</h2></a>
                         </div>
-                    {{end}}
                     </div>
+                {{end}}
                 </div>
             </div>
             <div class="col-lg-3">{{template "side_bar"}}</div>

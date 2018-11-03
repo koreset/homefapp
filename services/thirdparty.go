@@ -39,14 +39,29 @@ func GetFlickrAlbums() ([]models.PhotoAlbum) {
 
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
-	//if err != nil {
-	//	fmt.Println(err)
-	//}
-	//fmt.Println(string(body))
 
 	var payload models.AlbumPayload
 	json.Unmarshal(body, &payload)
-	//json.NewDecoder(response.Body).Decode(&payload)
-	fmt.Println("PhotoAlbums: +++++ ", payload)
 	return payload.PhotoSets.PhotoAlbums
+}
+
+func GetFlickrPhotosInAlbum(albumId int) (photos []models.PhotoItem) {
+	albumUrl := "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=b5fd7ac0bc2b2e1670312fa98fbe0ae8&photoset_id=" + strconv.Itoa(albumId) + "&user_id=100756072%40N02&extras=url_sq%2Curl_t%2Curl_s%2Curl_m%2Curl_l%2Curl_n&format=json&nojsoncallback=1"
+	resp, err := http.Get(albumUrl)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+
+	defer resp.Body.Close()
+
+	var photoAlbum models.PhotosPayload
+	body, err := ioutil.ReadAll(resp.Body)
+	jsonError := json.Unmarshal(body, &photoAlbum)
+	if jsonError != nil {
+		fmt.Println("Json marshal error: ", jsonError)
+		return nil
+	}
+
+	return photoAlbum.PhotoSet.PhotoItems
 }

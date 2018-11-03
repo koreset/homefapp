@@ -18,11 +18,16 @@ import (
 	"github.com/satori/go.uuid"
 	"github.com/semihalev/gin-stats"
 	"html/template"
+	"io/ioutil"
+	"log"
 	"net/http"
+	"runtime"
+	"strings"
 )
 
 var db *gorm.DB
 var funcMaps template.FuncMap
+var templates *template.Template
 
 // AutoMigrate run auto migration
 func AutoMigrate(values ...interface{}) {
@@ -37,7 +42,7 @@ func SetupDB() {
 	media.RegisterCallbacks(db)
 }
 
-func setupTemplatFuncs() template.FuncMap {
+func setupTemplateFuncs() template.FuncMap {
 	funcMaps = make(template.FuncMap)
 	funcMaps["unsafeHtml"] = utils.UnsafeHtml
 	funcMaps["stripSummaryTags"] = utils.StripSummaryTags
@@ -75,14 +80,22 @@ func SetupRouter() *gin.Engine {
 	post.Meta(&admin.Meta{Name: "Body", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 
 	router := gin.Default()
-	router.Use(func(c *gin.Context) {
-		fmt.Println("User Agent: ", c.Request.UserAgent())
-		c.Next()
-	})
-	router.Use(RequestIdMiddleware())
+	//router.Use(func(c *gin.Context) {
+	//	fmt.Println("User Agent: ", c.Request.UserAgent())
+	//	c.Next()
+	//})
+	//router.Use(RequestIdMiddleware())
 
-	router.SetFuncMap(setupTemplatFuncs())
-	router.LoadHTMLGlob("views/**/*")
+	if runtime.GOOS == "linux" {
+		log.Println("Loading html from binary")
+		router.SetHTMLTemplate(templates)
+	}
+
+	if runtime.GOOS == "darwin" {
+		router.SetFuncMap(setupTemplateFuncs())
+		router.LoadHTMLGlob("views/**/*")
+
+	}
 
 	router.GET("/stats", func(context *gin.Context) {
 		context.JSON(http.StatusOK, stats.Report())
@@ -97,6 +110,7 @@ func SetupRouter() *gin.Engine {
 	router.GET("/resources/books", controllers.ResourceBooks)
 	router.GET("/resources/eco-instigator", controllers.ResourceEcoInstigator)
 	router.GET("/resources/gallery", controllers.ResourceGallery)
+	router.GET("/resources/gallery/:albumid/:albumtitle", controllers.ResourceGalleryDetail)
 	router.GET("/sustainability-academy", controllers.SustainabilityAcademy)
 	router.GET("posts/:id", controllers.GetPost)
 	router.GET("publications", controllers.GetPublications)
@@ -122,6 +136,28 @@ func SetupRouter() *gin.Engine {
 	return router
 }
 
+func loadTemplates() (*template.Template, error) {
+	templates = template.New("")
+	templates.Funcs(setupTemplateFuncs())
+	var myAssets = Assets.Files
+
+	for name, file := range myAssets {
+		if file.IsDir() || !strings.HasSuffix(name, ".html") {
+			continue
+		}
+		h, err := ioutil.ReadAll(file)
+		if err != nil {
+			return nil, err
+		}
+		templates, err = templates.New(name).Parse(string(h))
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return templates, nil
+}
+
 func main() {
 	port := flag.String("port", "4000", "The port the app will listen to")
 	host := flag.String("host", "0.0.0.0", "The ip address to listen on")
@@ -138,6 +174,8 @@ func main() {
 	} else {
 		SetupDB()
 		defer db.Close()
+
+		loadTemplates()
 		r := SetupRouter()
 		fmt.Println(*host, *port)
 		r.Run(fmt.Sprintf("%s:%s", *host, *port))

@@ -1,0 +1,22 @@
+{{define "resource-gallery-detail"}}
+{{template "base_header" .title}}
+<section class="flickr-gallery container">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <h1>Photo Gallery</h1>
+                <h5>{{.albumtitle}}</h5>
+                <div class="row photo-grid">
+                {{range .album}}
+                        <div class="photo-item" data-src="{{ .UrlLarge}}">
+                            <img class="img-fluid album-item-image" src="{{ .UrlMedium}}" alt="">
+                        </div>
+                {{end}}
+                </div>
+            </div>
+            <div class="col-lg-3">{{template "side_bar"}}</div>
+        </div>
+    </div>
+</section>
+{{template "base_footer"}}
+{{ end}}

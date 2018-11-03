@@ -13,11 +13,9 @@ func Home(c *gin.Context) {
 	postsTop := services.GetPosts(0, 3)
 	postsBottom := services.GetPosts(4, 3)
 	videos := services.GetVideos()
-	publications := services.GetPublications()
 	payload["postsTop"] = postsTop
 	payload["postsBottom"] = postsBottom
 	payload["videos"] = videos
-	payload["publications"] = publications
 	payload["active"] = "home_page"
 	payload["title"] = "Home"
 
