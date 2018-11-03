@@ -18,6 +18,7 @@ func GetTweets(c *gin.Context) {
 
 	tweets, response, err := client.Timelines.UserTimeline(&twitter.UserTimelineParams{ScreenName: "Health_Earth", Count: 5,TweetMode: "extended"})
 
+
 	shallowTweets := utils.GetShallowTweets(tweets)
 
 	if err != nil {

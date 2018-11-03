@@ -21,30 +21,20 @@ func ResourceIndex(c *gin.Context) {
 }
 
 func ResourcePublications(c *gin.Context) {
-	payload := make(map[string]interface{})
-	posts := services.GetPosts(0, 9)
-	videos := services.GetVideos()
-	publications := services.GetPublications(0, 5)
-	payload["posts"] = posts
-	payload["videos"] = videos
-	payload["publications"] = publications
-	payload["active"] = "hunger_politics"
+	var limit = 5
+	page, err := strconv.Atoi(c.Param("page"))
 
-	for _, v := range publications {
-		fmt.Println(v.Body)
-		fmt.Println("===============Images===================")
-		for _, img := range v.Images {
-			fmt.Printf("Publication Image: %#v \n", img.File.URL("big"))
-		}
-		fmt.Println("==============Images====================")
-
-		fmt.Println("===============Documents===================")
-		for _, doc := range v.Documents {
-			fmt.Printf("Publication Attachment: %#v \n", doc.File.URL())
-		}
-		fmt.Println("==============Documents====================")
-
+	if err != nil{
+		page = 0
 	}
+
+	payload := make(map[string]interface{})
+	posts := services.GetPosts(0, 5)
+	publications := services.GetPublications(limit * page, 5)
+	payload["posts"] = posts
+	payload["publications"] = publications
+	payload["active"] = "publications"
+	payload["nextPage"] = page + 1
 
 	c.HTML(http.StatusOK, "resource-publications", payload)
 
