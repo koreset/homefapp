@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-env GOOS=linux GOARCH=amd64 go build -tags 'bindatafs' -o homef-gin
-
 # build views into binary and then deploy
+echo "===== Generating assets file ======="
 go-assets-builder views -o assets.go
+
+env GOOS=linux GOARCH=amd64 go build -tags 'bindatafs' -o homef-gin
 
 rsync -azP public/ root@homefbase:/home/apps/homef/public/
 #rsync -azP views/ root@homefbase:/home/apps/homef/views/
