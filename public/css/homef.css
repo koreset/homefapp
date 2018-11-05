@@ -176,10 +176,6 @@ section.programme-areas {
     margin-bottom: 30px;
 }
 
-div.card-body a:hover {
-    color: rgba(5, 4, 5, 0.29);
-}
-
 footer {
     background-color: #222222;
     color: #ffffff;
@@ -224,22 +220,35 @@ footer p {
     height: 300px;
 }
 
-.news-card-image {
+.news-card-image, div.card-image {
     overflow: hidden;
-    height: 300px;
+    height: 250px;
 }
 
 .news-card-image .card-top {
     object-fit: contain;
 }
 
+.card-body {
+    background-color: #000000;
+}
+
 .card-body a {
     text-decoration: none;
+    color: #FFBC20;
+}
+
+.card-body a:hover {
     color: #ffffff;
 }
 
 .card-background {
     background-color: #383A3C;
+}
+
+.news-index-footer a {
+    margin: 2rem auto;
+    display: block;
 }
 
 .tweet-body p {
@@ -501,6 +510,17 @@ section.advisory-board {
     margin-left: auto;
     margin-bottom: 1rem;
     text-align: center;
+}
+
+ul.social-list {
+    padding: 0;
+    width:100%;
+}
+
+ul.social-list li img {
+    width: 75px;
+    height: 75px;
+    padding: 0.5rem;
 }
 
 /* End Tests CSS */

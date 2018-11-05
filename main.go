@@ -117,6 +117,7 @@ func SetupRouter() *gin.Engine {
 	router.GET("publications", controllers.GetPublications)
 	router.GET("/test", controllers.GetTest)
 	router.GET("/news", controllers.GetNews)
+	router.GET("/news/:page", controllers.GetNews)
 	router.GET("/new", controllers.GetNew)
 	router.GET("/boot", controllers.GetBoot)
 
