@@ -1,23 +1,21 @@
 package controllers
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/koreset/homefapp/services"
-	"strconv"
+	"net/http"
 )
 
 func GetPost(c *gin.Context) {
 	payload := make(map[string] interface{} )
-	id := c.Param("id")
-	fmt.Println("The ID: ", id)
-	postID, err := strconv.Atoi(id)
-	if err != nil {
+	slug := c.Param("slug")
+	fmt.Println("The Slug: ", slug)
+	if slug == "" {
 		c.HTML(http.StatusNotFound, "content_not_found", nil)
 		return
 	}
-	post := services.GetPost(postID)
+	post := services.GetPostBySlug(slug)
 	recentPosts := services.GetRecentPosts(0,5)
 	payload["post"] = post
 	payload["recentPosts"] = recentPosts

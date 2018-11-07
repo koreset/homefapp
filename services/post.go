@@ -12,7 +12,7 @@ var defaultAttributes = []string{"id", "src", "href", "title", "alt", "name", "r
 
 func GetPosts(start, limit int) []models.Post {
 	var posts []models.Post
-	GetDB().Where("type in (?) and body != '' and summary != ''", []string{"article", "press_release", "news"}).Preload("Images").Order("created desc").Offset(start).Limit(limit).Find(&posts)
+	GetDB().Where("type in (?) and body != '' and summary != ''", []string{"article", "press_release", "news"}).Preload("Images").Preload("Categories").Order("created desc").Offset(start).Limit(limit).Find(&posts)
 	// Lets sanitize the html output and strip off MSOffice tags
 	for _, post := range posts {
 		post.Body, _ = sanitize.HTMLAllowing(post.Body, defaultTags, defaultAttributes)
@@ -23,7 +23,7 @@ func GetPosts(start, limit int) []models.Post {
 
 func GetRecentPosts(start, limit int) []models.Post {
 	var posts []models.Post
-	GetDB().Where("type in (?) and body != '' and summary != ''", []string{"article", "press_release", "news"}).Preload("Images").Order("created desc").Offset(start).Limit(limit).Find(&posts)
+	GetDB().Where("type in (?) and body != '' and summary != ''", []string{"article", "press_release", "news"}).Preload("Images").Preload("Categories").Order("created desc").Offset(start).Limit(limit).Find(&posts)
 	// Lets sanitize the html output and strip off MSOffice tags
 	for _, post := range posts {
 		post.Body, _ = sanitize.HTMLAllowing(post.Body, defaultTags, defaultAttributes)
@@ -31,7 +31,6 @@ func GetRecentPosts(start, limit int) []models.Post {
 	}
 	return posts
 }
-
 
 func GetVideos() []models.Post {
 	var videos []models.Post
@@ -41,9 +40,15 @@ func GetVideos() []models.Post {
 
 func GetPost(postid int) models.Post {
 	var post models.Post
-	GetDB().Where("id = ? ", postid).Preload("Images").Preload("Links").Preload("Videos").First(&post)
+	GetDB().Set("gorm:auto_preload", true).Where("id = ? ", postid).First(&post)
 
 	fmt.Println(post)
+	return post
+}
+
+func GetPostBySlug(slug string) models.Post {
+	var post models.Post
+	GetDB().Set("gorm:auto_preload", true).Where("slug = ? ", slug).First(&post)
 	return post
 }
 
@@ -61,8 +66,11 @@ func GetPublication(postid int) models.Post {
 	return pub
 }
 
-func GetPostsForCategory(start int, limit int, category int) []models.Post {
+func GetPostsForCategory(start int, limit int, categoryString string) []models.Post {
+	var category models.Category
 	var posts []models.Post
-	GetDB().Where("type in (?,?) and category_id = ?", "article", "news", category).Preload("Images").Preload("Videos").Preload("Links").Order("created desc").Offset(start).Limit(limit).Find(&posts)
+	GetDB().First(&category, "name = ?",categoryString)
+	GetDB().Set("gorm:auto_preload", true).Model(&category).Order("created desc").Offset(start).Limit(limit).Related(&posts, "Posts")
+	fmt.Println(posts)
 	return posts
 }

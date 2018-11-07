@@ -9,7 +9,7 @@ import (
 func FossilPolitics(c *gin.Context) {
 	payload := make(map[string]interface{})
 	//posts := services.GetPosts(0, 3)
-	posts := services.GetPostsForCategory(0, 3, 3)
+	posts := services.GetPostsForCategory(0, 3, "Fossil Politics")
 	videos := services.GetVideos()
 	payload["posts"] = posts
 	payload["videos"] = videos
@@ -22,7 +22,7 @@ func FossilPolitics(c *gin.Context) {
 
 func HungerPolitics(c *gin.Context) {
 	payload := make(map[string]interface{})
-	posts := services.GetPostsForCategory(0, 3, 2)
+	posts := services.GetPostsForCategory(0, 3, "Hunger Politics")
 	videos := services.GetVideos()
 	payload["posts"] = posts
 	payload["videos"] = videos
@@ -35,7 +35,7 @@ func HungerPolitics(c *gin.Context) {
 
 func SustainabilityAcademy(c *gin.Context) {
 	payload := make(map[string]interface{})
-	posts := services.GetPostsForCategory(0, 3, 4)
+	posts := services.GetPostsForCategory(0, 3, "Sustainability Academy")
 	gallery, _ := services.GetFlickrImages(9)
 	payload["gallery"] = gallery
 	payload["posts"] = posts

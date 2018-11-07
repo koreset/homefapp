@@ -4,7 +4,7 @@
     <ul>
     {{range .recentPosts}}
         <li class="d-flex align-items-center"><img src="/public{{(index .Images 0).File.URL}}" alt="">
-            <p><a href="/posts/{{.ID}}">{{.Title}}</a></p></li>
+            <p><a href="/posts/{{.Slug}}">{{.Title}}</a></p></li>
     {{end}}
     </ul>
 </div>

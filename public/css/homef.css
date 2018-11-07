@@ -523,6 +523,18 @@ ul.social-list li img {
     padding: 0.5rem;
 }
 
+div.news-card div.card-footer, div.card-item div.card-footer{
+     padding:0.2rem;
+     background-color: #000000;
+     color: #ffffff;
+ }
+
+div.news-card div.card-footer p, div.card-item div.card-footer p{
+    color: #ffffff;
+    font-size: 0.7rem;
+    padding: 0.1rem 0.5rem 0.1rem 0.1rem;
+    margin-bottom: 0.4rem;
+}
 /* End Tests CSS */
 
 /* Media queries */

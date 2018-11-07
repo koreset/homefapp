@@ -22,8 +22,17 @@ var newDB *gorm.DB
 var homefDB *gorm.DB
 var dbError error
 
-func baseMigration() {
+type TempData struct {
+	CategoryId uint
+}
 
+type TempImage struct {
+	ID       uint
+	FileName string
+	Url      string
+}
+
+func migrateCategories() {
 	var categoryQuery = "select tid as id, name from taxonomy_term_data"
 
 	catrows, _ := homefDB.Raw(categoryQuery).Rows()
@@ -38,17 +47,49 @@ func baseMigration() {
 
 	defer catrows.Close()
 
+}
+
+func baseMigration() {
+
 	var baseQuery = "select nid as id, title, type, created, changed as updated from node"
 	rows, _ := homefDB.Raw(baseQuery).Rows()
+	defer rows.Close()
 
 	for rows.Next() {
 		var post models.Post
 		homefDB.ScanRows(rows, &post)
+		post.Slug = createUniqueSlug(post.Title)
+		fmt.Println(post.Slug)
 		newDB.Create(&post)
 		newDB.Save(&post)
 	}
 
-	defer rows.Close()
+}
+
+func createUniqueSlug(title string) string {
+	slugTitle := slug.Make(title)
+	if len(slugTitle) > 50 {
+		slugTitle = slugTitle[:50]
+		if slugTitle[len(slugTitle)-1:] == "-" {
+			slugTitle = slugTitle[:len(slugTitle)-1]
+		}
+	}
+
+	if slugExists(slugTitle) {
+		slugTitle = slugTitle + "-1"
+	}
+	return slugTitle
+}
+
+func slugExists(slug string) bool {
+	var post models.Post
+	err := newDB.Where("slug = ?", slug).First(&post).Error
+	if err != nil {
+		fmt.Println("====== The slug does not exist ==========")
+		return false
+	}
+	fmt.Println("====== The slug does exist ==========")
+	return true
 }
 
 func populateArticleBody() {
@@ -71,28 +112,34 @@ func populateArticleBody() {
 	}
 }
 
-func populateCategories(){
+func getCategory(td TempData) (models.Category) {
+	var cat models.Category
+	newDB.Where("id = ?", td.CategoryId).First(&cat)
+	return cat
+}
+
+func populateCategories() {
 	var posts []models.Post
 	newDB.Find(&posts)
 	for _, v := range posts {
 		rows, _ := homefDB.Raw("select tid as category_id from taxonomy_index where nid  = ? ", v.ID).Rows()
+		var cats []TempData
 
 		for rows.Next() {
-			homefDB.ScanRows(rows, &v)
+			var td TempData
+
+			err := homefDB.ScanRows(rows, &td)
+			if err == nil {
+				v.Categories = append(v.Categories, getCategory(td))
+			}
 		}
 
-		fmt.Println("CategoryID: ", v.CategoryID)
+		fmt.Println("CategoryIDS: ", cats)
 		fmt.Println("Post ID: ", v.ID)
+		fmt.Printf("Categories: %#v\n", v.Categories)
 
 		newDB.Save(&v)
 	}
-
-}
-
-type TempImage struct {
-	ID       uint
-	FileName string
-	Url      string
 }
 
 func transformString(file string) string {
@@ -128,7 +175,7 @@ func populateImages() {
 			if err != nil {
 				fmt.Println(err.Error())
 				continue
-			}else{
+			} else {
 				newFileName := transformString(image.FileName)
 				//newPath := "/content/images/" + strconv.Itoa(int(v.ID)) + "/" + newFileName
 				//storage.Put(newPath, theFile)
@@ -257,6 +304,7 @@ func main() {
 	//awsConnection := "homef:wordpass15@tcp(rds-mysql-homef.cb44dbuhyviz.eu-west-2.rds.amazonaws.com:3306)/homef?charset=utf8&parseTime=True&loc=Local"
 	localConnection := "root:wordpass15@tcp(localhost:3306)/homef?charset=utf8&parseTime=True&loc=Local"
 	drupalConnection := "onajome:wordpass15@tcp(mysql.homef.org:3306)/homef_db?charset=utf8&parseTime=True&loc=Local"
+	//localDrupalConnection := "root:wordpass15@tcp(localhost:3306)/homef_db?charset=utf8&parseTime=True&loc=Local"
 	newDB, dbError = gorm.Open("mysql", localConnection)
 	if dbError != nil {
 		panic(dbError)
@@ -270,7 +318,8 @@ func main() {
 	//newDB.LogMode(true)
 	//homefDB.LogMode(true)
 
-	var category models.Category
+	//var category models.Category
+	var categories []models.Category
 	var posts []models.Post
 	var post models.Post
 	var video []models.Video
@@ -278,7 +327,7 @@ func main() {
 	var link []models.Link
 	var documents []models.Document
 
-	newDB.Model(&category).Related(&posts)
+	newDB.Model(&posts).Related(&categories, "Categories")
 	newDB.Model(&post).Related(&video)
 	newDB.Model(&post).Related(&image)
 	newDB.Model(&post).Related(&link)
@@ -286,12 +335,13 @@ func main() {
 	newDB.AutoMigrate(&models.Category{}, &models.Post{}, &models.Document{}, &models.Video{}, &models.Image{}, &models.Link{})
 	media.RegisterCallbacks(newDB)
 
-	//baseMigration()
-	//populateArticleBody()
-	//populateCategories()
+	migrateCategories()
+	baseMigration()
+	populateArticleBody()
+	populateCategories()
 	populateImages()
-	//populateVideoItems()
-	//populateLinks()
-	//populatePublications()
+	populateVideoItems()
+	populateLinks()
+	populatePublications()
 
 }

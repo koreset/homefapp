@@ -2,14 +2,23 @@
 <div class="card news-card flex-grow-1">
     <div class="card-image">
     {{ if .Images}}
-        <a href="/posts/{{.ID }}"><img class="card-img-top img-fluid" src="/public{{(index .Images 0).File.URL}}"
-                                       alt=""></a>
+        <a href="/posts/{{.Slug }}"><img class="card-img-top img-fluid" src="/public{{(index .Images 0).File.URL}}"
+                                         alt=""></a>
     {{ end }}
 
     </div>
     <div class="card-body">
-        <h5><a href="/posts/{{.ID }}">{{ .Title}}</a></h5>
+        <h5><a href="/posts/{{.Slug}}">{{ .Title}}</a></h5>
     {{/*<p>{{.Body | stripSummaryTags | truncateBody 300 }}</p>*/}}
     </div>
+{{ if .Categories}}
+    <div class="card-footer">
+        <p class="text-right">
+        {{range .Categories}}
+        {{ .Name}},
+        {{end}}
+        </p>
+    </div>
+{{end}}
 </div>
 {{end}}

@@ -113,7 +113,7 @@ func SetupRouter() *gin.Engine {
 	router.GET("/resources/gallery", controllers.ResourceGallery)
 	router.GET("/resources/gallery/:albumid/:albumtitle", controllers.ResourceGalleryDetail)
 	router.GET("/sustainability-academy", controllers.SustainabilityAcademy)
-	router.GET("posts/:id", controllers.GetPost)
+	router.GET("posts/:slug", controllers.GetPost)
 	router.GET("publications", controllers.GetPublications)
 	router.GET("/test", controllers.GetTest)
 	router.GET("/news", controllers.GetNews)
