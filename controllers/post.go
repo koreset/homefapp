@@ -8,7 +8,7 @@ import (
 )
 
 func GetPost(c *gin.Context) {
-	payload := make(map[string] interface{} )
+	payload := make(map[string]interface{})
 	slug := c.Param("slug")
 	fmt.Println("The Slug: ", slug)
 	if slug == "" {
@@ -16,7 +16,7 @@ func GetPost(c *gin.Context) {
 		return
 	}
 	post := services.GetPostBySlug(slug)
-	recentPosts := services.GetRecentPosts(0,5)
+	recentPosts := services.GetRecentPosts(0, 5)
 	payload["post"] = post
 	payload["recentPosts"] = recentPosts
 	payload["active"] = "none"
@@ -24,6 +24,13 @@ func GetPost(c *gin.Context) {
 	c.HTML(http.StatusOK, "post-detail", payload)
 }
 
-func GetPublications(c *gin.Context){
+func GetPublications(c *gin.Context) {
 	c.HTML(http.StatusOK, "publications_home", nil)
+}
+
+func GetPostsForCategory(c *gin.Context) {
+	payload := make(map[string]interface{})
+	categoryTitle := c.Param("category")
+	payload["categoryTitle"] = categoryTitle
+	c.HTML(http.StatusOK, "category-list", payload)
 }

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,8 +18,6 @@ func Home(c *gin.Context) {
 	payload["active"] = "home_page"
 	payload["title"] = "Home"
 
-	fmt.Println("Request from: ", c.ClientIP())
-	fmt.Println(c.Request.UserAgent())
 	c.HTML(http.StatusOK, "home", payload)
 
 }

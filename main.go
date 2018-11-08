@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/Masterminds/sprig"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/koreset/gtf"
@@ -43,7 +44,7 @@ func SetupDB() {
 }
 
 func setupTemplateFuncs() template.FuncMap {
-	funcMaps = make(template.FuncMap)
+	funcMaps := sprig.FuncMap()
 	funcMaps["unsafeHtml"] = utils.UnsafeHtml
 	funcMaps["stripSummaryTags"] = utils.StripSummaryTags
 	funcMaps["displayDateString"] = utils.DisplayDateString
@@ -104,6 +105,7 @@ func SetupRouter() *gin.Engine {
 	router.GET("/about-us", controllers.AboutUs)
 	router.GET("/fossil-politics", controllers.FossilPolitics)
 	router.GET("/hunger-politics", controllers.HungerPolitics)
+	router.GET("/categories/:category", controllers.GetPostsForCategory)
 	router.GET("/resources", controllers.ResourceIndex)
 	router.GET("/resources/annual-reports", controllers.ResourceAnnualReports)
 	router.GET("/resources/publications", controllers.ResourcePublications)

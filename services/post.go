@@ -12,7 +12,7 @@ var defaultAttributes = []string{"id", "src", "href", "title", "alt", "name", "r
 
 func GetPosts(start, limit int) []models.Post {
 	var posts []models.Post
-	GetDB().Where("type in (?) and body != '' and summary != ''", []string{"article", "press_release", "news"}).Preload("Images").Preload("Categories").Order("created desc").Offset(start).Limit(limit).Find(&posts)
+	GetDB().Set("gorm:auto_preload", true).Where("type in (?) and body != ''", []string{"article", "press_release", "news"}).Order("created desc").Offset(start).Limit(limit).Find(&posts)
 	// Lets sanitize the html output and strip off MSOffice tags
 	for _, post := range posts {
 		post.Body, _ = sanitize.HTMLAllowing(post.Body, defaultTags, defaultAttributes)
