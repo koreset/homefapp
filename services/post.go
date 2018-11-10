@@ -21,6 +21,17 @@ func GetPosts(start, limit int) []models.Post {
 	return posts
 }
 
+func GetEvents(start, limit int) []models.Post {
+	var posts []models.Post
+	GetDB().Set("gorm:auto_preload", true).Where("type in (?) and body != ''", []string{"event"}).Order("created desc").Offset(start).Limit(limit).Find(&posts)
+	// Lets sanitize the html output and strip off MSOffice tags
+	for _, post := range posts {
+		post.Body, _ = sanitize.HTMLAllowing(post.Body, defaultTags, defaultAttributes)
+		//fmt.Println(post.Images[0].File.OSS.URL("large"))
+	}
+	return posts
+}
+
 func GetRecentPosts(start, limit int) []models.Post {
 	var posts []models.Post
 	GetDB().Where("type in (?) and body != '' and summary != ''", []string{"article", "press_release", "news"}).Preload("Images").Preload("Categories").Order("created desc").Offset(start).Limit(limit).Find(&posts)

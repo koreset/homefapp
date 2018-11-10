@@ -182,6 +182,13 @@ func main() {
 		loadTemplates()
 		r := SetupRouter()
 		fmt.Println(*host, *port)
+
+		//if runtime.GOOS == "linux"{
+		//	log.Fatal(autotls.Run(r, "beta.homef.org", "homef.org", "www.homef.org"))
+		//}else{
+		//	r.Run(fmt.Sprintf("%s:%s", *host, *port))
+		//}
+
 		r.Run(fmt.Sprintf("%s:%s", *host, *port))
 	}
 }
