@@ -173,7 +173,7 @@ section.sustainability-banner {
 }
 
 section.programme-areas {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 footer {
@@ -540,6 +540,10 @@ a.cat-list{
     color: #ffffff;
 }
 
+a.cat-list-inverted{
+    text-decoration: none;
+}
+
 section.post-detail p.text-muted{
     font-size: 0.9rem;
     font-style: italic;
@@ -548,9 +552,15 @@ section.post-detail p.text-muted{
 section.post-detail img.img-fluid {
     margin-bottom: 1rem;
 }
+
+section.container.programme-areas img{
+    margin-bottom: 1rem;
+}
 /* End Tests CSS */
 
 /* Media queries */
+
+
 @media (max-width: 768px) {
     .card-deck {
         display: -ms-flexbox;
@@ -560,6 +570,10 @@ section.post-detail img.img-fluid {
     }
 
     div.slide-item h2 {
+        font-size: 1.5rem;
+    }
+
+    h1{
         font-size: 1.5rem;
     }
 
