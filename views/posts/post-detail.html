@@ -5,8 +5,8 @@
         <div class="row">
             <div class="col-lg-9 post-content">
                 <h1>{{ .post.Title}}</h1>
-                <p class="subtitle">{{ .post.Created | displayDate}} | {{ .post.Type}}</p>
-                <img src="/public{{(index .post.Images 0).File.URL}}" alt="" class="img-fluid">
+                <p class="text-muted text-left">{{ .post.Created | displayDate}}</p>
+                <img src="/public{{(index .post.Images 0).File.URL "big" }}" alt="" class="img-fluid">
             {{.post.Body | unsafeHtml}}
             </div>
             <div class="col-lg-3">

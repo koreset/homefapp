@@ -74,10 +74,11 @@ func SetupRouter() *gin.Engine {
 	assetManager := Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
 	// Add Media Library
 	Admin.AddResource(&media_library.MediaLibrary{}, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(&models.Category{}, &admin.Config{Name:"Categories", Menu: []string{"Content Management"}})
 
 	post := Admin.AddResource(&models.Post{}, &admin.Config{Name: "Posts", Menu: []string{"Content Management"}})
-	post.IndexAttrs("ID", "Title", "Body", "Summary", "Images", "Videos", "Links", "Type")
-	post.NewAttrs("Title", "Body", "Summary", "Images", "Videos", "Links", "Type")
+	post.IndexAttrs("ID", "Title", "Body", "Summary", "Images", "Videos", "Links", "Type", "Categories")
+	post.NewAttrs("Title", "Body", "Summary", "Images", "Videos", "Links", "Type", "Categories")
 	post.Meta(&admin.Meta{Name: "Body", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 
 	router := gin.Default()

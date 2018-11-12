@@ -539,6 +539,15 @@ div.news-card div.card-footer p, div.card-item div.card-footer p{
 a.cat-list{
     color: #ffffff;
 }
+
+section.post-detail p.text-muted{
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+section.post-detail img.img-fluid {
+    margin-bottom: 1rem;
+}
 /* End Tests CSS */
 
 /* Media queries */
