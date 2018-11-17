@@ -1,7 +1,7 @@
 package models
 
 import (
-	"fmt"
+	"github.com/gosimple/slug"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/media"
 	"github.com/qor/media/media_library"
@@ -88,7 +88,6 @@ type Event struct {
 }
 
 func (p *Post) BeforeCreate() (err error) {
-	fmt.Println(p.Body)
 	if p.Created == 0 {
 		p.Created = int32(time.Now().Unix())
 	}
@@ -97,5 +96,18 @@ func (p *Post) BeforeCreate() (err error) {
 		p.Updated = int32(time.Now().Unix())
 	}
 
+	p.Slug = createUniqueSlug(p.Title)
+
 	return nil
+}
+
+func createUniqueSlug(title string) string {
+	slugTitle := slug.Make(title)
+	if len(slugTitle) > 50 {
+		slugTitle = slugTitle[:50]
+		if slugTitle[len(slugTitle)-1:] == "-" {
+			slugTitle = slugTitle[:len(slugTitle)-1]
+		}
+	}
+	return slugTitle
 }

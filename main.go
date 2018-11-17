@@ -74,19 +74,15 @@ func SetupRouter() *gin.Engine {
 	assetManager := Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
 	// Add Media Library
 	Admin.AddResource(&media_library.MediaLibrary{}, &admin.Config{Menu: []string{"Site Management"}})
-	Admin.AddResource(&models.Category{}, &admin.Config{Name:"Categories", Menu: []string{"Content Management"}})
+	Admin.AddResource(&models.Category{}, &admin.Config{Name: "Categories", Menu: []string{"Content Management"}})
 
 	post := Admin.AddResource(&models.Post{}, &admin.Config{Name: "Posts", Menu: []string{"Content Management"}})
 	post.IndexAttrs("ID", "Title", "Body", "Summary", "Images", "Videos", "Links", "Type", "Categories")
-	post.NewAttrs("Title", "Body", "Summary", "Images", "Videos", "Links", "Type", "Categories")
+	post.NewAttrs("Title", "Body", "Summary", "Images", "Videos", "Links", "Categories", "Type")
 	post.Meta(&admin.Meta{Name: "Body", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
+	post.Meta(&admin.Meta{Name: "Type", Type: "select_one", Config: &admin.SelectOneConfig{Collection: []string{"article", "publication","blog","video", "press_release", "event", "news"}}})
 
 	router := gin.Default()
-	//router.Use(func(c *gin.Context) {
-	//	fmt.Println("User Agent: ", c.Request.UserAgent())
-	//	c.Next()
-	//})
-	//router.Use(RequestIdMiddleware())
 
 	if runtime.GOOS == "linux" {
 		log.Println("Loading html from binary")
@@ -133,7 +129,13 @@ func SetupRouter() *gin.Engine {
 	}
 
 	router.Static("/public", "./public")
-	router.Any("/admin/*resources", gin.WrapH(mux))
+	admin := router.Group("/admin", gin.BasicAuth(gin.Accounts{
+		"jome":   "wordpass15",
+		"nnimmo": "wordpass15"}))
+	{
+		admin.Any("/*resources", gin.WrapH(mux))
+	}
+	//router.Any("/admin/*resources", gin.WrapH(mux))
 	router.NoRoute(func(context *gin.Context) {
 		fmt.Println(">>>>>>>>>>>>>>>>>> 404 <<<<<<<<<<<<<<<<<<<")
 		context.HTML(http.StatusNotFound, "content_not_found", nil)
