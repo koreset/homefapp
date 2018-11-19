@@ -16,6 +16,7 @@ import (
 	"github.com/qor/media"
 	"github.com/qor/media/asset_manager"
 	"github.com/qor/media/media_library"
+	"github.com/qor/qor"
 	"github.com/satori/go.uuid"
 	"github.com/semihalev/gin-stats"
 	"html/template"
@@ -39,6 +40,7 @@ func AutoMigrate(values ...interface{}) {
 
 func SetupDB() {
 	db = services.Init()
+	db.LogMode(true)
 	db.AutoMigrate(&models.Post{}, &models.Video{}, &models.Image{}, &models.Link{}, &models.Category{})
 	media.RegisterCallbacks(db)
 }
@@ -70,6 +72,12 @@ func SetupRouter() *gin.Engine {
 	Admin.SetAssetFS(bindatafs.AssetFS.NameSpace("admin"))
 
 	Admin.MountTo("/admin", mux)
+
+	//API Setup
+	API := admin.New(&qor.Config{DB:db})
+	API.AddResource(&models.Post{})
+
+	API.MountTo("/adminapi", mux)
 
 	assetManager := Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
 	// Add Media Library
@@ -135,7 +143,7 @@ func SetupRouter() *gin.Engine {
 	{
 		admin.Any("/*resources", gin.WrapH(mux))
 	}
-	//router.Any("/admin/*resources", gin.WrapH(mux))
+	router.Any("/adminapi/*resources", gin.WrapH(mux))
 	router.NoRoute(func(context *gin.Context) {
 		fmt.Println(">>>>>>>>>>>>>>>>>> 404 <<<<<<<<<<<<<<<<<<<")
 		context.HTML(http.StatusNotFound, "content_not_found", nil)

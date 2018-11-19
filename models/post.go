@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/gosimple/slug"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/media"
@@ -97,6 +98,17 @@ func (p *Post) BeforeCreate() (err error) {
 	}
 
 	p.Slug = createUniqueSlug(p.Title)
+
+	fmt.Printf("======> New post: %#v", p.Title)
+	fmt.Printf("======> New post: %#v", p.Summary)
+	fmt.Printf("======> New post: %#v", p.Images)
+	fmt.Printf("=======> Images: %#v", p.Images[0].File.FileName)
+
+	for i := range p.Images {
+		p.Images[i].File.Sizes = p.Images[i].GetSizes()
+		file, _ := p.Images[i].File.Base.FileHeader.Open()
+		p.Images[i].File.Scan(file)
+	}
 
 	return nil
 }

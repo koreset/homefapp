@@ -3,3 +3,4 @@ public/wp-content
 tmp
 .idea/
 homef-gin
+.DS_Store
