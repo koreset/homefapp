@@ -85,8 +85,8 @@ func SetupRouter() *gin.Engine {
 	Admin.AddResource(&models.Category{}, &admin.Config{Name: "Categories", Menu: []string{"Content Management"}})
 
 	post := Admin.AddResource(&models.Post{}, &admin.Config{Name: "Posts", Menu: []string{"Content Management"}})
-	post.IndexAttrs("ID", "Title", "Body", "Summary", "Images", "Videos", "Links", "Type", "Categories")
-	post.NewAttrs("Title", "Body", "Summary", "Images", "Videos", "Links", "Categories", "Type")
+	post.IndexAttrs("ID", "Title", "Body", "Summary", "Type", "Categories")
+	post.NewAttrs("Title", "Body", "Summary", "Images", "Videos", "Links", "Documents","Categories", "Type")
 	post.Meta(&admin.Meta{Name: "Body", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 	post.Meta(&admin.Meta{Name: "Type", Type: "select_one", Config: &admin.SelectOneConfig{Collection: []string{"article", "publication","blog","video", "press_release", "event", "news"}}})
 
